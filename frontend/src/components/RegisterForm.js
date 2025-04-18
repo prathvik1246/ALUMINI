@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import './RegisterForm.css';
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -8,72 +8,58 @@ const RegisterForm = () => {
     password: '',
     gradYear: '',
     branch: '',
-    role: 'student', // default to 'student'
+    role: 'student',
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted", formData);
-    try {
-      const response = await axios.post('http://localhost:5000/api/register', formData);
-      alert(response.data.message || 'Registration successful');
-    } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        alert('Error: ' + error.response.data.message);
-      } else {
-        alert('An unexpected error occurred.');
-        console.error(error);
-      }
-    }
+    console.log('Form submitted:', formData);
+    // Add fetch/axios POST call here if needed
   };
-  
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Register</h2>
+    <form className="form" onSubmit={handleSubmit}>
       <input
         type="text"
         name="fullName"
+        placeholder="Full Name"
         value={formData.fullName}
         onChange={handleChange}
-        placeholder="Full Name"
         required
       />
       <input
         type="email"
         name="email"
+        placeholder="Email"
         value={formData.email}
         onChange={handleChange}
-        placeholder="Email"
         required
       />
       <input
         type="password"
         name="password"
+        placeholder="Password"
         value={formData.password}
         onChange={handleChange}
-        placeholder="Password"
         required
       />
       <input
         type="text"
         name="gradYear"
+        placeholder="Graduation Year"
         value={formData.gradYear}
         onChange={handleChange}
-        placeholder="Graduation Year"
         required
       />
       <input
         type="text"
         name="branch"
+        placeholder="Branch"
         value={formData.branch}
         onChange={handleChange}
-        placeholder="Branch"
         required
       />
       <select name="role" value={formData.role} onChange={handleChange}>

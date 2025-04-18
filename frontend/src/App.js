@@ -1,11 +1,14 @@
 import React from 'react';
 import RegisterForm from './components/RegisterForm';
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <h1>Welcome to Alumni Connect</h1>
-      <RegisterForm />
+      <div className="register-container">
+        <h1 className="title">Alumni-Connect</h1>
+        <RegisterForm />
+      </div>
     </div>
   );
 }
