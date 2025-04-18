@@ -1,111 +1,75 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import './FormStyles.css';
+import './RegisterForm.css';
 
-function RegisterForm() {
+const RegisterForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
-    gradYear: '',
-    branch: '',
-    role: 'student',
+    graduationYear: '',
+    profession: ''
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('http://localhost:5000/api/register', formData);
-      alert(response.data.message);
-    } catch (error) {
-      alert('Error: ' + (error.response?.data?.message || error.message));
-    }
+    // Add registration logic here
   };
 
   return (
-    <div className="form-container">
-      <h2>Register for Alumni Connect</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Full Name:</label>
-          <input
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Graduation Year:</label>
-          <input
-            type="text"
-            name="gradYear"
-            value={formData.gradYear}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Branch:</label>
-          <input
-            type="text"
-            name="branch"
-            value={formData.branch}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div>
-          <label>Role:</label>
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            required
-          >
-            <option value="student">Student</option>
-            <option value="graduate">Graduate</option>
-          </select>
-        </div>
-
-        <button type="submit">Register</button>
-      </form>
+    <div className="register-container">
+      <div className="register-card">
+        <h2>Join AlumniConnect</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Full Name</label>
+            <input 
+              type="text" 
+              value={formData.fullName}
+              onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input 
+              type="email" 
+              value={formData.email}
+              onChange={(e) => setFormData({...formData, email: e.target.value})}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input 
+              type="password" 
+              value={formData.password}
+              onChange={(e) => setFormData({...formData, password: e.target.value})}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Graduation Year</label>
+            <input 
+              type="number" 
+              value={formData.graduationYear}
+              onChange={(e) => setFormData({...formData, graduationYear: e.target.value})}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Profession</label>
+            <input 
+              type="text" 
+              value={formData.profession}
+              onChange={(e) => setFormData({...formData, profession: e.target.value})}
+              required
+            />
+          </div>
+          <button type="submit">Create Account</button>
+        </form>
+      </div>
     </div>
   );
-}
+};
 
 export default RegisterForm;

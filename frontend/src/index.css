@@ -1,6 +1,10 @@
 body {
+  font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  background: none;
+  background-color: #f0f0f0;
+}
+
+a {
+  text-decoration: none;
 }
