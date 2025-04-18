@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import './RegisterForm.css';
+import axios from 'axios';
+import './FormStyles.css';
 
-const RegisterForm = () => {
+function RegisterForm() {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -11,64 +12,100 @@ const RegisterForm = () => {
     role: 'student',
   });
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Add fetch/axios POST call here if needed
+    try {
+      const response = await axios.post('http://localhost:5000/api/register', formData);
+      alert(response.data.message);
+    } catch (error) {
+      alert('Error: ' + (error.response?.data?.message || error.message));
+    }
   };
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="fullName"
-        placeholder="Full Name"
-        value={formData.fullName}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={formData.email}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={formData.password}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="gradYear"
-        placeholder="Graduation Year"
-        value={formData.gradYear}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="branch"
-        placeholder="Branch"
-        value={formData.branch}
-        onChange={handleChange}
-        required
-      />
-      <select name="role" value={formData.role} onChange={handleChange}>
-        <option value="student">Student</option>
-        <option value="graduate">Graduate</option>
-      </select>
-      <button type="submit">Register</button>
-    </form>
+    <div className="form-container">
+      <h2>Register for Alumni Connect</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Full Name:</label>
+          <input
+            type="text"
+            name="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Email:</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Graduation Year:</label>
+          <input
+            type="text"
+            name="gradYear"
+            value={formData.gradYear}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Branch:</label>
+          <input
+            type="text"
+            name="branch"
+            value={formData.branch}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div>
+          <label>Role:</label>
+          <select
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            required
+          >
+            <option value="student">Student</option>
+            <option value="graduate">Graduate</option>
+          </select>
+        </div>
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
   );
-};
+}
 
 export default RegisterForm;
