@@ -1,18 +1,44 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './RegisterForm.css';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: '',
-    graduationYear: '',
-    profession: ''
+    gradYear: '',
+    branch: '',
+    role: 'student'
   });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add registration logic here
+    console.log("Form submitted", formData);
+    try {
+      const response = await axios.post('http://localhost:5000/api/register', formData);
+      alert(response.data.message || 'Registration successful');
+
+      navigate('/login');
+
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        alert('Error: ' + error.response.data.message);
+      } else {
+        alert('An unexpected error occurred.');
+        console.error(error);
+      }
+    }
   };
 
   return (
@@ -51,20 +77,25 @@ const RegisterForm = () => {
             <label>Graduation Year</label>
             <input 
               type="number" 
-              value={formData.graduationYear}
-              onChange={(e) => setFormData({...formData, graduationYear: e.target.value})}
+              value={formData.gradYear}
+              onChange={(e) => setFormData({...formData, gradYear: e.target.value})}
               required
             />
           </div>
           <div className="form-group">
-            <label>Profession</label>
+            <label>branch</label>
             <input 
               type="text" 
-              value={formData.profession}
-              onChange={(e) => setFormData({...formData, profession: e.target.value})}
+              value={formData.branch}
+              onChange={(e) => setFormData({...formData, branch: e.target.value})}
               required
             />
           </div>
+          <select name="role" value={formData.role} onChange={handleChange}>
+            <option value="" disabled>Select Role</option>
+            <option value="student">Student</option>
+            <option value="graduate">Graduate</option>
+          </select>
           <button type="submit">Create Account</button>
         </form>
       </div>
